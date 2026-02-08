@@ -1,0 +1,390 @@
+### Html тест по растровій графіці
+
+```html
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Тест: Растрова графіка</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    /* Сучасний неоновий стиль */
+    :root {
+      --bg1: #0f2027;
+      --bg2: #203a43;
+      --bg3: #2c5364;
+      --accent: #00c6ff;
+      --accent2: #2a5298;
+      --text: #f0f0f0;
+      --muted: #cccccc;
+      --card: rgba(255,255,255,0.06);
+      --card-hover: rgba(0,198,255,0.15);
+      --good: #19e68c;
+      --bad: #ff5c77;
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      color: var(--text);
+      background: linear-gradient(120deg, var(--bg1), var(--bg2), var(--bg3));
+    }
+    header {
+      text-align: center;
+      padding: 28px 16px 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      background: linear-gradient(90deg, #1e3c72, #2a5298);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+    }
+    header h1 {
+      margin: 0;
+      font-size: 24px;
+      color: #fff;
+    }
+    header p {
+      margin: 8px 0 0;
+      font-size: 13px;
+      color: #e6e6e6;
+    }
+    .wrap {
+      max-width: 980px;
+      margin: 28px auto;
+      padding: 20px;
+    }
+    .card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 10px 28px rgba(0,0,0,0.45);
+      animation: fadeIn 0.6s ease;
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .progress {
+      width: 48%;
+      height: 8px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      box-shadow: inset 0 0 6px rgba(0,0,0,0.25);
+    }
+    .progress > span {
+      display: block;
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+      transition: width 0.35s ease;
+    }
+    .q-title {
+      font-size: 20px;
+      color: var(--accent);
+      text-shadow: 0 0 10px rgba(0,198,255,0.6);
+      margin: 8px 0 14px;
+    }
+    .answers {
+      display: grid;
+      gap: 12px;
+    }
+    .answers button {
+      text-align: left;
+      padding: 14px 16px;
+      border: none;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.1);
+      color: var(--text);
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+      font-weight: 600;
+    }
+    .answers button:hover {
+      transform: translateY(-1px);
+      background: var(--card-hover);
+    }
+    .answers button.correct {
+      background: rgba(25, 230, 140, 0.18);
+      border: 1px solid rgba(25, 230, 140, 0.6);
+    }
+    .answers button.wrong {
+      background: rgba(255, 92, 119, 0.18);
+      border: 1px solid rgba(255, 92, 119, 0.6);
+    }
+    .feedback {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      display: none;
+      font-weight: 700;
+    }
+    .feedback.good {
+      display: block;
+      background: rgba(25, 230, 140, 0.12);
+      color: #b9ffdb;
+      border: 1px solid rgba(25, 230, 140, 0.45);
+    }
+    .feedback.bad {
+      display: block;
+      background: rgba(255, 92, 119, 0.12);
+      color: #ffc9d2;
+      border: 1px solid rgba(255, 92, 119, 0.45);
+    }
+    .nav {
+      margin-top: 16px;
+      display: flex;
+      gap: 10px;
+    }
+    .nav button {
+      padding: 10px 14px;
+      border-radius: 8px;
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      transition: transform 0.2s ease, filter 0.2s ease;
+    }
+    .nav button.secondary {
+      background: rgba(255,255,255,0.1);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .nav button:disabled {
+      opacity: 0.45;
+      cursor: default;
+    }
+    .nav button:hover:not(:disabled) {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+    }
+    .summary {
+      text-align: center;
+      padding: 28px 10px;
+    }
+    .summary h2 {
+      color: var(--accent);
+      margin: 0 0 6px;
+    }
+    .summary p {
+      margin: 4px 0;
+      color: var(--muted);
+    }
+    .score-pill {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Тест: Растрова графіка</h1>
+  <p>Відповідай на запитання. Правильна відповідь відкриє наступне питання.</p>
+</header>
+
+<div class="wrap">
+  <div class="card" id="quiz">
+    <div class="topbar">
+      <div>Питання: <span id="counter">1 / 12</span></div>
+      <div class="progress"><span id="progressBar"></span></div>
+    </div>
+
+    <div class="q-title" id="question">1. Основний елемент растрового зображення?</div>
+    <div class="answers" id="answers"></div>
+
+    <div class="feedback" id="feedback"></div>
+
+    <div class="nav">
+      <button class="secondary" id="retryBtn" disabled>Спробувати ще раз</button>
+      <button id="nextBtn" disabled>Наступне питання</button>
+    </div>
+  </div>
+
+  <div class="card summary" id="summary" style="display:none;">
+    <h2>МОЛОДЕЦЬ!</h2>
+    <p>Ти завершив(ла) тест по растровій графіці.</p>
+    <div class="score-pill" id="score">Результат: 12 / 12</div>
+    <div class="nav" style="justify-content:center; margin-top:18px;">
+      <button onclick="restart()">Пройти ще раз</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Запитання з варіантами й правильними відповідями
+  const questions = [
+    {
+      text: "1. Основний елемент растрового зображення?",
+      options: ["Вектор","Піксель","Клітинка","Точка входу"],
+      correctIndex: 1
+    },
+    {
+      text: "2. Який з форматів є растровим?",
+      options: ["SVG","EPS","PNG","PDF"],
+      correctIndex: 2
+    },
+    {
+      text: "3. Яка головна проблема при збільшенні растрового зображення?",
+      options: ["Втрата кольору","Розмиття та пікселізація","Зміна формату","Перевантаження пам’яті"],
+      correctIndex: 1
+    },
+    {
+      text: "4. Яке з цих ПЗ є безкоштовним?",
+      options: ["Adobe Photoshop","CorelDRAW","GIMP","Adobe Illustrator"],
+      correctIndex: 2
+    },
+    {
+      text: "5. Яка програма найчастіше використовується професіоналами для обробки фото?",
+      options: ["Paint.NET","Krita","Photoshop","Inkscape"],
+      correctIndex: 2
+    },
+    {
+      text: "6. Для чого призначена програма Krita?",
+      options: ["Технічне креслення","Обробка відео","Цифрове малювання","Векторна графіка"],
+      correctIndex: 2
+    },
+    {
+      text: "7. Який з наведених форматів підтримує прозорість?",
+      options: ["JPG","PNG","BMP","TIF"],
+      correctIndex: 1
+    },
+    {
+      text: "8. Що таке роздільна здатність зображення?",
+      options: ["Кількість шарів","Якість друку","Кількість пікселів на одиницю довжини","Глибина кольору"],
+      correctIndex: 2
+    },
+    {
+      text: "9. У якому середовищі найчастіше використовують растрову графіку?",
+      options: ["3D-моделювання","Анімація","Дизайн і фотографія","Створення логотипів"],
+      correctIndex: 2
+    },
+    {
+      text: "10. Який формат найкраще підходить для зберігання фотографій у високій якості без втрат?",
+      options: ["JPG","PNG","TIFF","GIF"],
+      correctIndex: 2
+    },
+    {
+      text: "11. Що НЕ є перевагою растрової графіки?",
+      options: ["Деталізація","Яскравість кольорів","Масштабованість без втрат"],
+      correctIndex: 2
+    },
+    {
+      text: "12. Яке ПЗ краще обрати для новачка?",
+      options: ["Photoshop","GIMP","CorelDRAW","Illustrator"],
+      correctIndex: 1
+    }
+  ];
+
+  let current = 0;
+  let score = 0;
+  const qEl = document.getElementById('question');
+  const aEl = document.getElementById('answers');
+  const fbEl = document.getElementById('feedback');
+  const nextBtn = document.getElementById('nextBtn');
+  const retryBtn = document.getElementById('retryBtn');
+  const counterEl = document.getElementById('counter');
+  const progressBar = document.getElementById('progressBar');
+  const summary = document.getElementById('summary');
+  const scoreEl = document.getElementById('score');
+  const quizEl = document.getElementById('quiz');
+
+  function renderQuestion() {
+    // Progress
+    counterEl.textContent = `${current + 1} / ${questions.length}`;
+    progressBar.style.width = `${(current) / questions.length * 100}%`;
+
+    // Content
+    const q = questions[current];
+    qEl.textContent = q.text;
+    aEl.innerHTML = '';
+    fbEl.className = 'feedback';
+    fbEl.style.display = 'none';
+    nextBtn.disabled = true;
+    retryBtn.disabled = true;
+
+    q.options.forEach((opt, idx) => {
+      const btn = document.createElement('button');
+      btn.textContent = `${"ABCD"[idx]}) ${opt}`;
+      btn.addEventListener('click', () => selectAnswer(idx, btn));
+      aEl.appendChild(btn);
+    });
+  }
+
+  function selectAnswer(idx, btn) {
+    const q = questions[current];
+    // Block multiple selections
+    [...aEl.children].forEach(b => b.disabled = true);
+
+    if (idx === q.correctIndex) {
+      btn.classList.add('correct');
+      fbEl.textContent = "МОЛОДЕЦЬ! Наступне питання";
+      fbEl.classList.add('good');
+      fbEl.style.display = 'block';
+      nextBtn.disabled = false;
+      score++;
+    } else {
+      btn.classList.add('wrong');
+      fbEl.textContent = "Не правильно. Спробуй ще раз";
+      fbEl.classList.add('bad');
+      fbEl.style.display = 'block';
+      retryBtn.disabled = false;
+    }
+  }
+
+  nextBtn.addEventListener('click', () => {
+    // advance progress bar immediately on next
+    current++;
+    if (current >= questions.length) {
+      finish();
+    } else {
+      renderQuestion();
+    }
+  });
+
+  retryBtn.addEventListener('click', () => {
+    // allow another attempt on the same question
+    [...aEl.children].forEach(b => {
+      b.disabled = false;
+      b.classList.remove('wrong','correct');
+    });
+    fbEl.className = 'feedback';
+    fbEl.style.display = 'none';
+    retryBtn.disabled = true;
+  });
+
+  function finish() {
+    progressBar.style.width = '100%';
+    quizEl.style.display = 'none';
+    summary.style.display = 'block';
+    scoreEl.textContent = `Результат: ${score} / ${questions.length}`;
+  }
+
+  function restart() {
+    current = 0;
+    score = 0;
+    summary.style.display = 'none';
+    quizEl.style.display = 'block';
+    renderQuestion();
+  }
+
+  // Init
+  renderQuestion();
+</script>
+
+</body>
+</html>
+```
